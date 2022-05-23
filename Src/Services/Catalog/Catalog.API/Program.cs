@@ -15,6 +15,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 
 
+
 builder.Services.AddScoped<ICatalogContext, CatalogContext>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
