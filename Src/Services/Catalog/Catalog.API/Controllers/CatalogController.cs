@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Catalog.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class CatalogController : ControllerBase
     {
@@ -23,47 +23,48 @@ namespace Catalog.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<Product>>> GetProductsAsync()
         {
-            return Ok(await _productRepository.GetProductsAsync());
+            var products = await _productRepository.GetProductsAsync();
+            return Ok(products);
         }
 
 
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Product>))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<IEnumerable<Product>> GetProducts()
-        {
-            return Ok(_productRepository.GetProducts());
-        }
+        //[HttpGet(Name = "GetProducts")]
+        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Product>))]
+        //[ProducesResponseType(StatusCodes.Status404NotFound)]
+        //public ActionResult<IEnumerable<Product>> GetProducts()
+        //{
+        //    return Ok(_productRepository.GetProducts());
+        //}
 
-        [HttpGet("{id:length(24)}", Name = "GetProductAsync")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Product))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Product>> GetProductByIdAsync(string id)
-        {
-            var product = await _productRepository.GetProductByIdAsync(id);
+       [HttpGet("{id:length(24)}", Name = "GetProductAsync")]
+       [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Product))]
+       [ProducesResponseType(StatusCodes.Status404NotFound)]
+       public async Task<ActionResult<Product>> GetProductByIdAsync(string id)
+       {
+           var product = await _productRepository.GetProductByIdAsync(id);
 
-            if (product != null) return Ok(product);
+           if (product != null) return Ok(product);
 
-            _logger.LogError($"product with id : {id} , not found");
-            return NotFound();
-        }
+           _logger.LogError($"product with id : {id} , not found");
+           return NotFound();
+       }
 
-        [HttpGet("{id:length(24)}", Name = "GetProduct")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Product))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Product> GetProductById(string id)
-        {
-            var product = _productRepository.GetProductById(id);
+    //    [HttpGet("{id:length(24)}", Name = "GetProduct")]
+    //    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Product))]
+    //    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    //    public ActionResult<Product> GetProductById(string id)
+    //    {
+    //        var product = _productRepository.GetProductById(id);
 
-            if (product != null) return Ok(product);
+    //        if (product != null) return Ok(product);
 
-            _logger.LogError($"product with id : {id} , not found");
-            return NotFound();
-        }
+    //        _logger.LogError($"product with id : {id} , not found");
+    //        return NotFound();
+    //    }
 
 
-        [HttpGet]
         [Route("/action/{category}", Name = "GetProductByCategoryAsync")]
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Product>))]
         public async Task<ActionResult<IEnumerable<Product>>> GetProductByCategoryAsync(string category)
         {
@@ -71,14 +72,14 @@ namespace Catalog.API.Controllers
             return Ok(products);
         }
 
-        [HttpGet]
-        [Route("/action/{category}", Name = "GetProductByCategory")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Product>))]
-        public ActionResult<IEnumerable<Product>> GetProductByCategory(string category)
-        {
-            var products = _productRepository.GetProductByCategory(category);
-            return Ok(products);
-        }
+    //    //[Route("/action/{category}", Name = "GetProductByCategory")]
+    //    [HttpGet]
+    //    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Product>))]
+    //    public ActionResult<IEnumerable<Product>> GetProductByCategory(string category)
+    //    {
+    //        var products = _productRepository.GetProductByCategory(category);
+    //        return Ok(products);
+    //    }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Product))]
