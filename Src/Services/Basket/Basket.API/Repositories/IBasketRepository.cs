@@ -14,10 +14,4 @@ namespace Basket.API.Repositories
         void DeleteBasket(string userName);
 
     }
-
-
-    //public class BasketRepository : IBasketRepository
-    //{
-
-    //}
 }
