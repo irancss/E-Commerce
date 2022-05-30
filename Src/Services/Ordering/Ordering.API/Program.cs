@@ -1,3 +1,4 @@
+using MassTransit;
 using Microsoft.OpenApi.Models;
 using Ordering.API.Extensions;
 using Ordering.Application;
@@ -18,6 +19,21 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
+
+
+
+//Start Config masstransit
+
+builder.Services.AddMassTransit(options =>
+{
+    options.UsingRabbitMq((ctx, configuration) =>
+    {
+        configuration.Host(builder.Configuration["EventBusSettings:HostAddress"]);
+    });
+});
+
+//End Config masstransit
+
 
 var app = builder.Build();
 
