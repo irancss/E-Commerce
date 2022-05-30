@@ -1,13 +1,13 @@
-﻿namespace EventBus.Messages.Events
+﻿namespace Basket.API.Entities
 {
-    public class BasketCheckoutEvent : IntegrationBaseEvent
+    public class BasketCheckout
     {
-        //DTO Class
 
-        #region Order Entity
+        //DTO
 
         public string UserName { get; set; }
         public decimal TotalPrice { get; set; }
+
 
         #region billing Address
 
@@ -21,6 +21,7 @@
 
         #endregion
 
+
         #region Payment
         public string CardName { get; set; }
         public string CardNumber { get; set; }
@@ -29,9 +30,5 @@
         public string PaymentMethod { get; set; }
 
         #endregion
-
-        #endregion
-
-
     }
 }

@@ -1,7 +1,9 @@
-﻿using Basket.API.Entities;
+﻿using AutoMapper;
+using Basket.API.Entities;
 using Basket.API.GrpcServices;
 using Basket.API.Repositories;
-using Microsoft.AspNetCore.Http;
+using EventBus.Messages.Events;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Basket.API.Controllers
@@ -13,12 +15,16 @@ namespace Basket.API.Controllers
         private readonly IBasketRepository _basketRepository;
         private readonly ILogger<BasketController> _logger;
         private readonly DiscountGrpcService _discountGrpcService;
+        private readonly IMapper _mapper;
+        private readonly IPublishEndpoint _eventBus;
 
-        public BasketController(IBasketRepository basketRepository, ILogger<BasketController> logger, DiscountGrpcService discountGrpcService)
+        public BasketController(IBasketRepository basketRepository, ILogger<BasketController> logger, DiscountGrpcService discountGrpcService, IMapper mapper, IPublishEndpoint eventBus)
         {
             _basketRepository = basketRepository;
             _logger = logger;
             _discountGrpcService = discountGrpcService;
+            _mapper = mapper;
+            _eventBus = eventBus;
         }
 
         [HttpGet("{userName}", Name = "GetBasket")]
@@ -33,10 +39,6 @@ namespace Basket.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ShoppingCart))]
         public async Task<ActionResult<ShoppingCart>> UpdateBasket([FromBody] ShoppingCart shoppingCart)
         {
-            //TODO : Communicate with discount GRPC 
-            //TODO : calculate latest prices  
-            //cosume discount grpc
-
             foreach (var item in shoppingCart.ShoppingCartItems)
             {
                 var coupon = await _discountGrpcService.GetDiscount(item.ProductName);
@@ -63,12 +65,34 @@ namespace Basket.API.Controllers
             }
         }
 
+        [Route("[action]")]
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Checkout([FromBody] BasketCheckout basketCheckout)
+        {
+            //1 get existing basket with total price
+            var basket = await _basketRepository.GetBasketAsync(basketCheckout.UserName);
+            if (basket == null)
+            {
+                return BadRequest();
+            }
+
+            //2 Create Basket Checkout Event --- set total price on basketCheckout eventMessage  
+            var eventMessage = _mapper.Map<BasketCheckoutEvent>(basketCheckout);
+            eventMessage.TotalPrice = basket.TotalPrice;
 
 
+            //3 Send Checkout Event ro rabbitMQ
+            await _eventBus.Publish(eventMessage);
 
 
+            //4 remove the basket
+            await _basketRepository.DeleteBasketAsync(basketCheckout.UserName);
 
+            return Accepted();
 
+        }
 
     }
 }
