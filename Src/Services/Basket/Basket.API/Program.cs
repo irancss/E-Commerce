@@ -1,7 +1,7 @@
 using Basket.API.GrpcServices;
 using Basket.API.Repositories;
 using Discount.Grpc.Protos;
-using Microsoft.Extensions.DependencyInjection;
+using MassTransit;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +28,18 @@ builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(
 });
 
 builder.Services.AddScoped<DiscountGrpcService>();
+
+builder.Services.AddMassTransit(options =>
+{
+    options.UsingRabbitMq((ctx, config) =>
+    {
+    config.Host(builder.Configuration["EventBusSettings:HostAddress"]); 
+    });
+});
+
+
+//no need in masstransit version 8
+//builder.Services.AddMassTransitHostedService();
 
 
 var app = builder.Build();
