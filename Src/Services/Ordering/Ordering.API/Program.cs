@@ -22,11 +22,7 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 var app = builder.Build();
 
 
-app.MigrateDatabase<OrderContext>((context, service) =>
-{
-    var logger = service.GetService<ILogger<OrderContextSeed>>();
-    OrderContextSeed.SeedAsync(context, logger).Wait();
-});
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -42,4 +38,11 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+
+app.MigrateDatabase<OrderContext>((context, service) =>
+{
+    var logger = service.GetService<ILogger<OrderContextSeed>>();
+    OrderContextSeed
+        .SeedAsync(context, logger)
+        .Wait();
+}).Run();

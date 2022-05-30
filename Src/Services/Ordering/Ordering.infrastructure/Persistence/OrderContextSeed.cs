@@ -28,6 +28,13 @@ namespace Ordering.infrastructure.Persistence
                     EmailAddress = "example@gmail.com",
                     AddressLine = "Tehran",
                     Country = "Iran",
+                    CW = "CW",
+                    CardName = "Card Name",
+                    CardNumber = "12345",
+                    Expiration = "Expiration",
+                    PaymentMethod = "Test",
+                    State = "Test",
+                    ZipCode = "Zip Code",
                     TotalPrice = 350
                 }
             };
