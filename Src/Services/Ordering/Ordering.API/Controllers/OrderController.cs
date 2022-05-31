@@ -41,7 +41,6 @@ namespace Ordering.API.Controllers
         [HttpPut(Name = "UpdateOrder")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-
         public async Task<ActionResult> UpdateOrder([FromBody] UpdateOrderCommand command)
         {
             var result = await _mediator.Send(command);
