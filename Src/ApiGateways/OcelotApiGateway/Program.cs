@@ -1,25 +1,59 @@
+using Ocelot.Cache.CacheManager;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
-var builder = WebApplication.CreateBuilder(args);
+//var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddJsonFile("ocelot.json");
+//IConfiguration configuration = new ConfigurationBuilder()
+//    .AddJsonFile($"ocelot.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+//    .Build();
+
+////builder.Configuration.AddJsonFile("ocelot.json");
+////builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
+////    .AddJsonFile($"ocelot.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+////    .AddEnvironmentVariables();
 
 
+////builder.Services.AddOcelot(builder.Configuration);
+//builder.Services.AddOcelot(configuration);
 
-builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
-    .AddJsonFile($"ocelot.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
-    .AddEnvironmentVariables();
+//var app = builder.Build();
 
+//app.MapGet("/", () => "Hello World!");
 
+//app.UseOcelot();
 
-builder.Services.AddOcelot(builder.Configuration);
+//app.Run();
 
-var app = builder.Build();
-
-app.MapGet("/", () => "Hello World!");
-
-app.UseOcelot().Wait();
-
-app.Run();
+new WebHostBuilder()
+    .UseKestrel()
+    .UseContentRoot(Directory.GetCurrentDirectory())
+    .ConfigureAppConfiguration((hostingContext, config) =>
+    {
+        config
+            .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
+            .AddJsonFile("appsettings.json", true, true)
+            .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", true, true)
+            .AddJsonFile($"ocelot.{hostingContext.HostingEnvironment.EnvironmentName}.json", true, true)
+            .AddEnvironmentVariables();
+    })
+    .ConfigureServices(s => {
+        s.AddOcelot().AddCacheManager(x =>
+        {
+            x.WithDictionaryHandle();
+        });
+    })
+    .ConfigureLogging((hostingContext, logging) =>
+    {
+        logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+        logging.AddConsole();
+        logging.AddDebug();
+    })
+    .UseIISIntegration()
+    .Configure(app =>
+    {
+        app.UseOcelot().Wait();
+    })
+    .Build()
+    .Run();
 
