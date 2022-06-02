@@ -37,7 +37,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus.Messages", "Buildi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateways", "ApiGateways", "{FFE98EC4-9AD2-4BB7-AFAD-4FB9712891C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OcelotApiGateway", "ApiGateways\OcelotApiGateway\OcelotApiGateway.csproj", "{3D49C25B-C83E-4ED7-8C3F-638AA450FFCD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OcelotApiGateway", "ApiGateways\OcelotApiGateway\OcelotApiGateway.csproj", "{3D49C25B-C83E-4ED7-8C3F-638AA450FFCD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce.Aggregator", "ApiGateways\ECommerce.Aggregator\ECommerce.Aggregator.csproj", "{32596119-F46A-488E-A33E-AD4870BD96F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +91,10 @@ Global
 		{3D49C25B-C83E-4ED7-8C3F-638AA450FFCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D49C25B-C83E-4ED7-8C3F-638AA450FFCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D49C25B-C83E-4ED7-8C3F-638AA450FFCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32596119-F46A-488E-A33E-AD4870BD96F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32596119-F46A-488E-A33E-AD4870BD96F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32596119-F46A-488E-A33E-AD4870BD96F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32596119-F46A-488E-A33E-AD4870BD96F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -108,6 +114,7 @@ Global
 		{9FDA4696-C463-443D-8E67-6DF31A93E9D6} = {1F2E05A9-5C5F-4111-B947-F3F5A4914C87}
 		{A7F56247-000A-4791-A9CD-DECDA096573B} = {A596EBD0-DF0A-4C0F-84EE-081E5E6DEBFF}
 		{3D49C25B-C83E-4ED7-8C3F-638AA450FFCD} = {FFE98EC4-9AD2-4BB7-AFAD-4FB9712891C1}
+		{32596119-F46A-488E-A33E-AD4870BD96F3} = {FFE98EC4-9AD2-4BB7-AFAD-4FB9712891C1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {66E8B3A1-4A91-4929-A2F0-BA0F3F3F8B92}
