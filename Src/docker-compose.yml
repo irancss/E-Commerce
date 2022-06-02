@@ -58,11 +58,18 @@ services:
       context: .
       dockerfile: ApiGateways/OcelotApiGateway/Dockerfile
 
+  ecommerce.aggregator:
+    image: ${DOCKER_REGISTRY-}ecommerceaggregator
+    build:
+      context: .
+      dockerfile: ApiGateways/ECommerce.Aggregator/Dockerfile
+
 volumes:
   mongo_data:
   portainer_data:
   postgres_data:
   pgadmin_data:
+
 
 
 

@@ -134,3 +134,10 @@ services:
     ports:
       - "8010:80"
 
+
+  ecommerce.aggregator:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"
+
