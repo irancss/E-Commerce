@@ -63,7 +63,7 @@ namespace Catalog.API.Controllers
     //    }
 
 
-        [Route("/action/{category}", Name = "GetProductByCategoryAsync")]
+        [Route("/[action]/{category}", Name = "GetProductByCategoryAsync")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Product>))]
         public async Task<ActionResult<IEnumerable<Product>>> GetProductByCategoryAsync(string category)

@@ -1,4 +1,5 @@
-﻿using ECommerce.Aggregator.Models;
+﻿using ECommerce.Aggregator.Extensions;
+using ECommerce.Aggregator.Models;
 
 namespace ECommerce.Aggregator.Services;
 
@@ -12,16 +13,19 @@ public class CatalogService : ICatalogService
     }
     public async Task<IEnumerable<CatalogViewModel>> GetCatalogAsync()
     {
-       await _httpClient.get
+        var response = await _httpClient.GetAsync("/api/v1/Catalog");
+        return await response.ReadContentAs<List<CatalogViewModel>>();
     }
 
     public async Task<IEnumerable<CatalogViewModel>> GetCatalogByCategoryAsync(string categoryName)
     {
-        throw new NotImplementedException();
+        var response = await _httpClient.GetAsync($"/api/v1/Catalog/GetProductByCategoryAsync/{categoryName}");
+        return await response.ReadContentAs<List<CatalogViewModel>>();
     }
 
     public async Task<CatalogViewModel> GetCatalogByIdAsync(string id)
     {
-        throw new NotImplementedException();
+        var response = await _httpClient.GetAsync($"/api/v1/Catalog/{id}");
+        return await response.ReadContentAs<CatalogViewModel>();
     }
 }
