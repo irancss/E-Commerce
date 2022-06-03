@@ -14,6 +14,6 @@ public class OrderService : IOrderService
     public async Task<IEnumerable<OrderResponseModel>> GetOrderByUserName(string userName)
     {
         var response = await _httpClient.GetAsync($"/Order/{userName}");
-        return await response.ReadContentAs<IEnumerable<OrderResponseModel>>();
+        return await response.ReadContentAs<List<OrderResponseModel>>();
     }
 }

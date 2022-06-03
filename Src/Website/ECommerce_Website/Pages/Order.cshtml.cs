@@ -1,22 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ECommerce_Website.Models;
+using ECommerce_Website.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ECommerce_Website
 {
     public class OrderModel : PageModel
     {
-        private readonly IOrderRepository _orderRepository;
+        private readonly IOrderService _orderService;
 
-        public OrderModel(IOrderRepository orderRepository)
+        public OrderModel(IOrderService orderService)
         {
-            _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
+            _orderService = orderService;
         }
 
-        public IEnumerable<Entities.Order> Orders { get; set; } = new List<Entities.Order>();
+        public IEnumerable<OrderResponseModel> Orders { get; set; } = new List<OrderResponseModel>();
 
         public async Task<IActionResult> OnGetAsync()
         {
-            Orders = await _orderRepository.GetOrdersByUserName("test");
+            var userName = "swn";
+            Orders = await _orderService.GetOrderByUserName(userName);
 
             return Page();
         }       

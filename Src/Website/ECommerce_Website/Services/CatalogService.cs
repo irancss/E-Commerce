@@ -17,7 +17,7 @@ public class CatalogService : ICatalogService
         return await response.ReadContentAs<List<CatalogModel>>();
     }
 
-    public async Task<CatalogModel> GetCatalogById(int id)
+    public async Task<CatalogModel> GetCatalogById(string id)
     {
         var response = await _httpClient.GetAsync($"/catalog/{id}");
         return await response.ReadContentAs<CatalogModel>();
